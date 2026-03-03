@@ -6,7 +6,7 @@ on:
 jobs:
   build_windows:
     name: Compile
-    runs-on: windows-latest
+    runs-on: windows-11-arm
     env:
       date:
       ver:
