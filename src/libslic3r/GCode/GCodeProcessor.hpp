@@ -163,6 +163,7 @@ namespace Slic3r {
         bool spiral_vase_mode;
 
         ConflictResultOpt conflict_result;
+        std::optional<std::pair<std::string, std::string>> sequential_collision_detected;
 
         void reset();
     };
@@ -295,6 +296,7 @@ namespace Slic3r {
                 float safe_feedrate; // mm/s
                 AxisCoords axis_feedrate; // mm/s
                 AxisCoords abs_axis_feedrate; // mm/s
+                Vec4f jd_unit_vec;
 
                 void reset();
             };
@@ -758,6 +760,7 @@ namespace Slic3r {
         float get_axis_max_feedrate(PrintEstimatedStatistics::ETimeMode mode, Axis axis) const;
         float get_axis_max_acceleration(PrintEstimatedStatistics::ETimeMode mode, Axis axis) const;
         float get_axis_max_jerk(PrintEstimatedStatistics::ETimeMode mode, Axis axis) const;
+        float get_junction_deviation(PrintEstimatedStatistics::ETimeMode mode) const;
         float get_retract_acceleration(PrintEstimatedStatistics::ETimeMode mode) const;
         void  set_retract_acceleration(PrintEstimatedStatistics::ETimeMode mode, float value);
         float get_acceleration(PrintEstimatedStatistics::ETimeMode mode) const;
@@ -778,6 +781,8 @@ namespace Slic3r {
         void update_estimated_statistics();
 
         double extract_absolute_position_on_axis(Axis axis, const GCodeReader::GCodeLine& line, double area_filament_cross_section);
+
+        float calc_junction_acceleration(const TimeBlock &block, const Vec4f &junction_vector, PrintEstimatedStatistics::ETimeMode mode) const;
    };
 
 } /* namespace Slic3r */
